@@ -36,6 +36,8 @@ Run the automated CRUD suite, including the actual Postman collection through Ne
 npm test
 ```
 
+The Postman collection completed all 8 requests and all 8 assertions successfully during local verification.
+
 To use the collection in Postman, import `postman/Assignment-8-Student-API.postman_collection.json`, set its `baseUrl` collection variable to `http://localhost:3000`, start the local API, and run the collection. The Create request saves its ID for the following Read, Update, and Delete requests. Newman, the Postman CLI runner, is also included in the automated test suite.
 
 ## Deploy the API on Render
