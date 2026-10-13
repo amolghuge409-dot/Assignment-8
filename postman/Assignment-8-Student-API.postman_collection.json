@@ -1,0 +1,201 @@
+{
+  "info": {
+    "_postman_id": "4b503fb0-1ed8-41ef-aab9-c753814732f8",
+    "name": "Assignment 8 - Student Records API",
+    "description": "CRUD API tests. Set baseUrl to the local or Render API URL, then run the collection in order. Create stores the studentId automatically for subsequent requests.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "studentId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('API and database are healthy', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().database).to.eql('connected');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create student",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Aisha Sharma\",\n  \"rollNumber\": \"CS-2024-018\",\n  \"department\": \"Computer Science\",\n  \"marks\": 88\n}"
+        },
+        "url": "{{baseUrl}}/api/students"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Student created', function () {",
+              "  pm.response.to.have.status(201);",
+              "  const student = pm.response.json().data;",
+              "  pm.expect(student.name).to.eql('Aisha Sharma');",
+              "  pm.expect(student.rollNumber).to.eql('CS-2024-018');",
+              "  pm.expect(student).to.have.property('_id');",
+              "  pm.collectionVariables.set('studentId', student._id);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List students",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/students"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Student list returned', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().count).to.be.above(0);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Read student",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/students/{{studentId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Student details returned', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().data._id).to.eql(pm.collectionVariables.get('studentId'));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update student",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"marks\": 94\n}"
+        },
+        "url": "{{baseUrl}}/api/students/{{studentId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Student updated', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().data.marks).to.eql(94);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Filter students by department",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/students?department=Computer%20Science"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Department filter works', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().data[0].department).to.eql('Computer Science');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete student",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/students/{{studentId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Student deleted', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json().message).to.include('deleted');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Confirm student is deleted",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/students/{{studentId}}"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Deleted student returns 404', function () {",
+              "  pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

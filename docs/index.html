@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Assignment 8 student records REST API documentation." />
+    <meta name="theme-color" content="#f5f7f5" />
+    <title>Student Records API | Assignment 8</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#"><span class="brand-icon">S</span>student<span>API</span></a>
+        <span class="assignment">NODE.JS · EXPRESS · MONGODB</span>
+      </header>
+
+      <section class="hero">
+        <p class="eyebrow"><span></span>ASSIGNMENT 08 · API REFERENCE</p>
+        <h1>Student records,<br /><span>one simple API.</span></h1>
+        <p class="intro">A REST API for creating, finding, updating, and removing student records.</p>
+        <div class="api-status">
+          <span class="status-dot"></span>
+          API hosting setup
+          <span class="status-hint">The API runs on Render; GitHub Pages hosts this documentation.</span>
+        </div>
+      </section>
+
+      <section class="base-url panel">
+        <div>
+          <span class="label">API BASE URL</span>
+          <code id="base-url">Set this to your Render service URL</code>
+        </div>
+        <span class="url-hint">Create the Render service using the README setup steps.</span>
+      </section>
+
+      <section class="endpoint-section" aria-labelledby="endpoints-title">
+        <div class="section-heading">
+          <div><p class="label">ENDPOINTS</p><h2 id="endpoints-title">Student operations</h2></div>
+          <span class="json-badge">JSON REST API</span>
+        </div>
+        <div class="endpoint-list">
+          <article class="endpoint panel">
+            <div class="endpoint-title"><span class="method post">POST</span><code>/api/students</code><span class="endpoint-summary">Create a student</span></div>
+            <p>Add a student with a name, unique roll number, department, and marks from 0–100.</p>
+            <pre><code>{
+  "name": "Aisha Sharma",
+  "rollNumber": "CS-2024-018",
+  "department": "Computer Science",
+  "marks": 88
+}</code></pre>
+            <span class="response-label">SUCCESS RESPONSE <b>201 Created</b></span>
+          </article>
+          <article class="endpoint panel">
+            <div class="endpoint-title"><span class="method get">GET</span><code>/api/students</code><span class="endpoint-summary">List all students</span></div>
+            <p>Returns every student. Add <code class="inline">?department=Computer%20Science</code> to filter by department.</p>
+            <span class="response-label">SUCCESS RESPONSE <b>200 OK</b></span>
+          </article>
+          <article class="endpoint panel">
+            <div class="endpoint-title"><span class="method get">GET</span><code>/api/students/:id</code><span class="endpoint-summary">Get one student</span></div>
+            <p>Find a student by the MongoDB document ID.</p>
+            <span class="response-label">SUCCESS RESPONSE <b>200 OK</b></span>
+          </article>
+          <article class="endpoint panel">
+            <div class="endpoint-title"><span class="method put">PUT</span><code>/api/students/:id</code><span class="endpoint-summary">Update a student</span></div>
+            <p>Update one or more student fields. The new values are validated before saving.</p>
+            <pre><code>{ "marks": 94 }</code></pre>
+            <span class="response-label">SUCCESS RESPONSE <b>200 OK</b></span>
+          </article>
+          <article class="endpoint panel">
+            <div class="endpoint-title"><span class="method delete">DELETE</span><code>/api/students/:id</code><span class="endpoint-summary">Delete a student</span></div>
+            <p>Permanently removes the matching student record.</p>
+            <span class="response-label">SUCCESS RESPONSE <b>200 OK</b></span>
+          </article>
+          <article class="endpoint panel">
+            <div class="endpoint-title"><span class="method get">GET</span><code>/api/health</code><span class="endpoint-summary">Check API status</span></div>
+            <p>Returns the API and MongoDB connection status. Render uses this endpoint as its health check.</p>
+            <span class="response-label">SUCCESS RESPONSE <b>200 OK</b></span>
+          </article>
+        </div>
+      </section>
+
+      <section class="errors panel">
+        <p class="label">RESPONSE CODES</p>
+        <div><span><b>400</b> Invalid input or student ID</span><span><b>404</b> Student or route not found</span><span><b>409</b> Duplicate roll number</span><span><b>500</b> Unexpected server error</span></div>
+      </section>
+
+      <section class="testing panel">
+        <div><p class="label">TEST WITH POSTMAN</p><h2>Run the included collection</h2><p>Import the collection from <code>postman/Assignment-8-Student-API.postman_collection.json</code>, set <code>baseUrl</code> to your Render URL, then run the whole collection in order.</p></div>
+        <a href="../postman/Assignment-8-Student-API.postman_collection.json" class="button">Get Postman collection <span>↗</span></a>
+      </section>
+
+      <footer><span>ASSIGNMENT 08</span><span>Express API · MongoDB</span></footer>
+    </main>
+  </body>
+</html>
